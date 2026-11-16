@@ -374,7 +374,9 @@ export class View {
   /** Screen position of a point in the world, for labels drawn in the DOM. */
   project(x: number, y: number, height: number): { x: number; y: number; on: boolean } {
     this.v.set(x, height, -y).project(this.camera);
-    const on = this.v.z < 1 && Math.abs(this.v.x) <= 1 && Math.abs(this.v.y) <= 1;
+    const behind = this.v.z > 1; // behind the camera: the projection flips, so flip it back
+    if (behind) { this.v.x = -this.v.x; this.v.y = -2; }
+    const on = !behind && Math.abs(this.v.x) <= 1 && Math.abs(this.v.y) <= 1;
     return { x: (this.v.x * 0.5 + 0.5) * this.w, y: (-this.v.y * 0.5 + 0.5) * this.h, on };
   }
 

@@ -698,7 +698,7 @@ export class Sim {
     if (d.role === 'healer') {
       const tank = this.tank();
       const anchor = tank && tank.alive ? tank : this.hero;
-      return dist(c, anchor) > 20 ? this.approach(c, anchor, 14) : null;
+      return dist(c, anchor) > 13 ? this.approach(c, anchor, 10) : null; // close enough to stay on screen
     }
     if (!tgt) return null;
     const gap = dist(c, tgt) - tgt.r;
@@ -718,7 +718,7 @@ export class Sim {
       }
       return best;
     }
-    return gap > d.range - 3 ? this.approach(c, tgt, d.range - 8) : null;
+    return gap > Math.min(d.range - 3, 11) ? this.approach(c, tgt, tgt.r + Math.min(d.range - 8, 8.5)) : null;
   }
 
   private stepCompanion(c: Unit, dt: number) {
